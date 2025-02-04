@@ -91,7 +91,7 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
   fi
 done
 
-hits=$(cat ${LOG_FILE} | grep "ERROR" | wc -l)
+hits=$(cat ${lastLogfile} | grep "ERROR" | wc -l)
 if [[ $hits -eq 0 ]]; then
   statusCode=0 # success
 else

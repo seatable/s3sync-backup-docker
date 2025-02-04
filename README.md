@@ -22,7 +22,7 @@ Just provide the rclone configuration file and the source and target bucket. Thi
 You can easily execute the rclone sync command in the Docker container with this command:
 
 ```bash
-docker exec -it s3sync-backup sync
+docker exec -it s3sync-backup backup
 ```
 
 ### Hooks
