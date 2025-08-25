@@ -1,8 +1,8 @@
 # Changelog
 
-## v1.0.2 (25.08.2025)
+## v1.0.3 (25.08.2025)
 
-- replace `--size-only` with `--fast-list`
+- remove `--size-only`
 
 ## v1.0.1 (04.02.2025)
 
