@@ -7,7 +7,7 @@ export BACKUP_CRON=${BACKUP_CRON:="15 3 * * *"}
 export LOG_LEVEL=${LOG_LEVEL:="INFO"}
 export LOG_TYPE=${LOG_TYPE:="stdout"}
 export ALLOWED_DEVIATION=${ALLOWED_DEVIATION:="1"}
-export USER_AGENT=${USER_AGENT:="s3sync-backup-docker/1.0.1"}
+export USER_AGENT=${USER_AGENT:="s3sync-backup-docker/1.0.2"}
 
 log() {
     local LEVEL="$1"
