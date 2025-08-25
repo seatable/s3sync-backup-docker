@@ -13,6 +13,10 @@ curl
 ADD https://github.com/rclone/rclone/releases/download/${RCLONE_VERSION}/rclone-${RCLONE_VERSION}-linux-amd64.zip /
 RUN unzip rclone-${RCLONE_VERSION}-linux-amd64.zip && mv rclone-*-linux-amd64/rclone /bin/rclone
 
+# Get docker binary 
+ADD https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz /
+RUN tar --extract --file docker-${DOCKER_VERSION}.tgz --directory /tmp/ --strip-components 1
+
 FROM ${BASE_IMAGE} AS runtime-image
 
 RUN \
@@ -31,14 +35,15 @@ RUN \
         openssh-client \
     && apt-get clean
 
-# get rclone from build-image
+# get rclone and docker from build-image
 COPY --from=build-image /bin/rclone /bin/rclone
+COPY --from=build-image /tmp/docker /usr/local/bin/docker
 
 RUN mkdir -p /local /var/log/rclone \
     && touch /var/log/cron.log \
     && touch /var/log/rclone/backup.log \
     && touch /var/log/rclone/lastrun.log \
-    && chmod +x /bin/rclone
+    && chmod +x /bin/rclone /usr/local/bin/docker
 
 # /data is the dir where you have to put the data to be backed up
 VOLUME /data

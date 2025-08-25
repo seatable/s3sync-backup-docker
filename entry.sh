@@ -45,6 +45,9 @@ if [ -n "$B5_FROM" ]; then log "DEBUG" "B5_FROM: ${B5_FROM}"; fi
 if [ -n "$B5_TO" ]; then log "DEBUG" "B5_TO: ${B5_TO}"; fi
 if [ -n "$B6_FROM" ]; then log "DEBUG" "B6_FROM: ${B6_FROM}"; fi
 if [ -n "$B6_TO" ]; then log "DEBUG" "B6_TO: ${B6_TO}"; fi
+log "DEBUG" "NUM_CHECKERS: ${NUM_CHECKERS}"
+log "DEBUG" "NUM_TRANSFERS: ${NUM_TRANSFERS}"
+log "DEBUG" "STATS_INTERVAL: ${STATS_INTERVAL}"
 
 
 log "INFO" "Setup s3 sync backup cron job with cron expression BACKUP_CRON: ${BACKUP_CRON}"
