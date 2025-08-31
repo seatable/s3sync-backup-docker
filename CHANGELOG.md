@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.1.1 (31.08.2025)
+## v1.1.2 (31.08.2025)
 
 - update rclone version from 1.69.0 to 1.71.0
 - add go garbage collector
