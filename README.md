@@ -60,6 +60,9 @@ The container is set up by setting environment variables and volumes.
 | `B3_FROM`           | ... up to 6 bucket mappings are allowed     |                                           |                                  |
 | `B3_TO`             |                                             |                                           |                                  |
 | `USER_AGENT`        | Define the user agent used with curl        | `s3sync-backup-docker/<version>`          | `s3sync-backup-docker/<version>` |
+| `NUM_CHECKERS`      | Define number of `--checkers` of rclone     | `64`                                      | `64`                             |
+| `NUM_TRANSFERS`     | Define number of `--transfers` of rclone    | `16`                                      | `16`                             | 
+| `STATS_INTERVAL`    | Define time between stats output            | `30m`                                     | `30m`                            |
 
 ### Mail notification
 
