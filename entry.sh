@@ -23,6 +23,7 @@ log "INFO" "Starting the s3 sync backup container ..."
 
 # make environment variables and path available to cron
 env >> /etc/environment
+export GOGC=20
 
 # output environment variables (debug only)
 log "DEBUG" "LIST OF ENVIRONMENT VARIABLES:"

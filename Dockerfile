@@ -2,7 +2,7 @@ ARG BASE_IMAGE="debian:12.8-slim@sha256:1537a6a1cbc4b4fd401da800ee9480207e7dc1f2
 
 FROM ${BASE_IMAGE} AS build-image
 
-ARG RCLONE_VERSION="v1.69.0"
+ARG RCLONE_VERSION="v1.71.0"
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
 unzip \

@@ -61,7 +61,7 @@ echo "--" >> $lastLogfile
 log "DEBUG" "Healthcheck start"
 healthcheck /start
 
-SYNC_PARAMS="--config /root/.config/rclone/rclone.conf --stats "${STATS_INTERVAL}" --stats-one-line --stats-log-level NOTICE --transfers="${NUM_TRANSFERS}" --checkers="${NUM_CHECKERS}" --skip-links --s3-no-check-bucket --log-file="${lastLogfile}" --log-level=NOTICE"
+SYNC_PARAMS="--config /root/.config/rclone/rclone.conf --stats "${STATS_INTERVAL}" --stats-one-line --stats-log-level NOTICE --transfers="${NUM_TRANSFERS}" --checkers="${NUM_CHECKERS}" --buffer-size="${BUFFER_SIZE}" --skip-links --s3-no-check-bucket --log-file="${lastLogfile}" --log-level=NOTICE"
 SIZE_PARAMS="--config /root/.config/rclone/rclone.conf --stats "${STATS_INTERVAL}" --stats-one-line --stats-log-level NOTICE --transfers="${NUM_TRANSFERS}" --checkers="${NUM_CHECKERS}" --skip-links --s3-no-check-bucket --log-file=/dev/null --log-level=NOTICE --json"
 
 # Define the maximum number of buckets you expect
