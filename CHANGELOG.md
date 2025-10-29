@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.1.3 (29.10.2025)
+
+- fix typo `NUM_TRANSFERS`
+
 ## v1.1.2 (31.08.2025)
 
 - update rclone version from 1.69.0 to 1.71.0
