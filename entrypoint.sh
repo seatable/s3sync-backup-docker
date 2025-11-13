@@ -30,7 +30,7 @@ rclone version
 if [ "$RUN_MODE" = "cron" ]; then
 
     echo "Setup s3 sync backup cron job with cron expression BACKUP_CRON: ${BACKUP_CRON}"
-    echo "${BACKUP_CRON} root /usr/bin/flock -n /var/run/s3sync.lock /bin/s3sync.sh >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
+    echo "${BACKUP_CRON} root /usr/bin/flock -n /var/run/sync.lock /bin/sync.sh >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
 
     echo '
 # An empty line is required at the end of this file for a valid cron file.
