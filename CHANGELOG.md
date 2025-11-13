@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.0.0 (13.11.2025)
+
+- complete rewrite
+- switch to RCLONE environment variables
+- improved logging
+- removed email notification
+
 ## v1.1.3 (29.10.2025)
 
 - fix typo `NUM_TRANSFERS`
