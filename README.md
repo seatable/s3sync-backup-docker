@@ -28,7 +28,7 @@ This container requires a rclone.conf with login credentials for source and targ
 
 ### Creating an rclone.conf file
 
-The simplest way to generate your `rclone.conf` file is by using the rclone configuration management command line. Follow these steps:
+The simplest way to generate your `rclone.conf` file is by using the rclone configuration management command line. Follow these steps to generate the file.
 
 ```
 docker run -it --entrypoint=/bin/bash seatable/s3sync-backup:latest -i
@@ -36,7 +36,7 @@ rclone config
 # Follow the prompts to create your rclone configuration.
 # Once completed, display the contents of the configuration file:
 cat /root/.config/rclone/rclone.conf
-# copy the content of this configuration file to the host and safe it as `rclone.conf`. It will automatically mounted in the container.
+# copy the content of this configuration file to the host and safe it as `rclone.conf`.
 ```
 
 For sure you could also create your rclone.conf manually. Your rclone.conf should like something like this - just an example.
@@ -60,6 +60,8 @@ region = nbg1
 endpoint = nbg1.your-objectstorage.com
 acl = private
 ```
+
+It will automatically mounted in the container.
 
 ### Environment variables
 
