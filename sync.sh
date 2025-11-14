@@ -93,24 +93,27 @@ healthcheck /start
 MAX_BUCKETS=6
 
 for ((i=1; i<=MAX_BUCKETS; i++)); do
-    # measure the duration for bucket sync
-    start_bs=`date +%s`
-
     FROM_VAR="B${i}_FROM"
     TO_VAR="B${i}_TO"
 
     if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
+
+        # Sync the buckets (bucket sync = bs)
         echo ""
-        log INFO "Sync Bucket $i with the command:"
+        log INFO "Sync the bucket $i with the command:"
         log INFO "rclone sync ${!FROM_VAR} ${!TO_VAR}"
+        start_bs=`date +%s`
         rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
-
         end_bs=`date +%s`
-        log "INFO" "Sync of Bucket $i finished after $((end_bs-start_bs)) seconds."
+        log "INFO" "Bucket sync finished after $((end_bs-start_bs)) seconds."
 
+        # Check bucket size (check size = cs)
         log INFO "Get the size of buckets"
+        start_sc=`date +%s`
         json1=`rclone size ${!FROM_VAR} --json`
         json2=`rclone size ${!TO_VAR} --json`
+        end_sc=`date +%s`
+        log "INFO" "Check size finished after $((end_sc-start_sc)) seconds."
 
         if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
             log "ERROR" "Bucket configuration for B${i}_FROM seems to be wrong"
