@@ -108,6 +108,7 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
         end_bs=`date +%s`
         log "INFO" "Sync of Bucket $i finished after $((end_bs-start_bs)) seconds."
 
+        log INFO "Get the size of buckets"
         json1=`rclone size ${!FROM_VAR} --json`
         json2=`rclone size ${!TO_VAR} --json`
 
