@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache curl bash cronie unzip
+RUN apk add --no-cache curl bash cronie unzip jq
 
 # Get newest rclone version
 RUN curl -Of https://downloads.rclone.org/rclone-current-linux-amd64.zip && \
