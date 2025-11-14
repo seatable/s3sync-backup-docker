@@ -42,10 +42,13 @@ healthcheck() {
     suffix=$1
     if [ -n "${HEALTHCHECK_URL}" ]; then
         log INFO "Reporting healthcheck $suffix ..."
-        [[ ${1} == "/start" ]] && m="" || m=$(cat ${LOG_FILE} | tail -n 300)
+        m=""
+        if [[ ${1} != "/start" ]]; then
+          m=$(tail -n 300 "${LOG_FILE}" 2>/dev/null)
+        fi
         curl -fSsL -o /dev/null --show-error --retry 3 -X POST \
             --user-agent ${USER_AGENT} \
-            --data-raw "$m" "${HEALTHCHECK_URL}${suffix}"
+            --data-raw "${m}" "${HEALTHCHECK_URL}${suffix}"
         if [ $? != 0 ]; then
             log ERROR "HEALTHCHECK_URL seems to be wrong..."
             exit 1

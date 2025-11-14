@@ -156,5 +156,9 @@ services:
           memory: 1G
 ```
 
+## Out of memory issue
 
+## Performance tweaking
+
+1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of 
 
