@@ -162,3 +162,7 @@ services:
 
 1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of 
 
+## Todos:
+
+- skip size check
+- pre tag nicht richtig
