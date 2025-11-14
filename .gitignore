@@ -3,3 +3,4 @@
 build.sh
 /deploy-test
 todos.md
+rclone.conf
