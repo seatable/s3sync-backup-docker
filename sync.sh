@@ -101,8 +101,8 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
     log INFO "Sync Bucket $i with the command:"
     log INFO "rclone sync ${!FROM_VAR} ${!TO_VAR}"
     rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
-    json1=`/rclone size ${!FROM_VAR} ${SIZE_PARAMS}`
-    json2=`/rclone size ${!TO_VAR} ${SIZE_PARAMS}`
+    json1=`rclone size ${!FROM_VAR} --json`
+    json2=`rclone size ${!TO_VAR} --json`
 
     if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
         log "ERROR" "Bucket configuration for B${i}_FROM seems to be wrong"
