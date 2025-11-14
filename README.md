@@ -160,7 +160,9 @@ services:
 
 ## Performance tweaking
 
-1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of 
+1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of memory problem (dmesg)
+2. more buffer does not really help 8M is fine
+3. --size-only is not recommended, lead to erneutes synchronisieren, obwohl objekte im ziel schon vorhanden.
 
 ## Todos:
 
