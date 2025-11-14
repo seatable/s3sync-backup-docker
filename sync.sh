@@ -71,7 +71,6 @@ function compare_size(){
     else
         status="OK"
     fi
-    echo "$1 vs $2 = $status" >> $LOG_FILE
     log INFO "$1 vs. $2 = $status"
 }
 
@@ -119,10 +118,10 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
         log "INFO" "Get the bucket size finished after $((end_sc-start_sc)) seconds."
 
         if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
-            log "ERROR" "Bucket configuration for B${i}_FROM seems to be wrong"
+            log ERROR "Bucket configuration for B${i}_FROM seems to be wrong"
         fi
         if [[ -z "$json2" ]] || ! echo "$json2" | jq . >/dev/null 2>&1 || ! echo "$json2" | jq 'has("count")' | grep -q true; then
-            log "ERROR" "Bucket configuration for B${i}_TO seems to be wrong"
+            log ERROR "Bucket configuration for B${i}_TO seems to be wrong"
         fi
         log DEBUG "Result of rclone size for B${i}_FROM: $json1"
         log DEBUG "Result of rclone size for B${i}_TO: $json2"
