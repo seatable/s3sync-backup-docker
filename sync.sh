@@ -98,7 +98,8 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
 
   if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
     echo "Sync Bucket $i:" >> $LOG_FILE
-    log INFO "Sync Bucket $i:"
+    log INFO "Sync Bucket $i with the command:"
+    log INFO "rclone sync ${!FROM_VAR} ${!TO_VAR}"
     rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
     json1=`/rclone size ${!FROM_VAR} ${SIZE_PARAMS}`
     json2=`/rclone size ${!TO_VAR} ${SIZE_PARAMS}`
