@@ -34,6 +34,7 @@ log() {
 
   if [ "$levelnum" -le "$loglevelnum" ]; then
     echo "[$level] $*"
+    echo "[$level] $*" >> ${LOG_FILE}
   fi
 }
 
@@ -84,7 +85,6 @@ else
 fi
 
 log NOTICE "s3sync job started at $(date +"%Y-%m-%d %H:%M:%S")."
-echo "s3sync job started at $(date +"%Y-%m-%d %H:%M:%S")" >> $LOG_FILE
 
 log DEBUG "Healthcheck start"
 healthcheck /start
@@ -93,28 +93,35 @@ healthcheck /start
 MAX_BUCKETS=6
 
 for ((i=1; i<=MAX_BUCKETS; i++)); do
-  FROM_VAR="B${i}_FROM"
-  TO_VAR="B${i}_TO"
+    # measure the duration for bucket sync
+    start_bs=`date +%s`
 
-  if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
-    echo "Sync Bucket $i:" >> $LOG_FILE
-    log INFO "Sync Bucket $i with the command:"
-    log INFO "rclone sync ${!FROM_VAR} ${!TO_VAR}"
-    rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
-    json1=`rclone size ${!FROM_VAR} --json`
-    json2=`rclone size ${!TO_VAR} --json`
+    FROM_VAR="B${i}_FROM"
+    TO_VAR="B${i}_TO"
 
-    if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
-        log "ERROR" "Bucket configuration for B${i}_FROM seems to be wrong"
+    if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
+        echo ""
+        log INFO "Sync Bucket $i with the command:"
+        log INFO "rclone sync ${!FROM_VAR} ${!TO_VAR}"
+        rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
+
+        end_bs=`date +%s`
+        log "INFO" "Sync of Bucket $i finished after $((end_bs-start_bs)) seconds."
+
+        json1=`rclone size ${!FROM_VAR} --json`
+        json2=`rclone size ${!TO_VAR} --json`
+
+        if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
+            log "ERROR" "Bucket configuration for B${i}_FROM seems to be wrong"
+        fi
+        if [[ -z "$json2" ]] || ! echo "$json2" | jq . >/dev/null 2>&1 || ! echo "$json2" | jq 'has("count")' | grep -q true; then
+            log "ERROR" "Bucket configuration for B${i}_TO seems to be wrong"
+        fi
+        log DEBUG "Result of rclone size for B${i}_FROM: $json1"
+        log DEBUG "Result of rclone size for B${i}_TO: $json2"
+
+        compare_size $json1 $json2
     fi
-    if [[ -z "$json2" ]] || ! echo "$json2" | jq . >/dev/null 2>&1 || ! echo "$json2" | jq 'has("count")' | grep -q true; then
-        log "ERROR" "Bucket configuration for B${i}_TO seems to be wrong"
-    fi
-    log "DEBUG" "Result of rclone size for B${i}_FROM: $json1"
-    log "DEBUG" "Result of rclone size for B${i}_TO: $json2"
-
-    compare_size $json1 $json2
-  fi
 done
 
 hits=$(cat ${LOG_FILE} | grep "ERROR" | wc -l)
@@ -127,7 +134,6 @@ fi
 end=`date +%s`
 
 log NOTICE "s3sync job finished at $(date +"%Y-%m-%d %H:%M:%S") after $((end-start)) seconds."
-echo "s3sync job finished at $(date +"%Y-%m-%d %H:%M:%S") after $((end-start)) seconds." >> $LOG_FILE
 
 if [[ $statusCode == 0 ]]; then
     log INFO "S3 Sync Backup Successful"

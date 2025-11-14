@@ -15,11 +15,11 @@ My main motivation to build that, was to easily backup our own SeaTable and Seaf
 
 ## Two operation types
 
-This container could be used in two different modes. The default one is the cron mode. You specify the cron schedule and the container will execute the rclone s3 sync everytime at schedule.
+This container could be used in two different modes. The default one is the cron mode (`RUN_MODE=cron`). You specify the cron schedule and the container will execute the rclone s3 sync everytime at schedule.
 The second mode is the single execution. The container simply waits for you to start the sync with the following command:
 
 ```bash
-docker exec -it s3sync sync
+docker exec -it s3sync sync.sh
 ```
 
 ## How to configure

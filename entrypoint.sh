@@ -15,16 +15,13 @@ fi
 
 # Output on start
 echo "Container was started at $(date) and is now ready."
+echo "RUN_MODE is ${RUN_MODE}"
+echo "Read more on https://github.com/seatable/s3sync-backup-docker."
 echo ""
 echo "# These environment variables were set:"
 env | sort
 echo ""
-echo "# How to use:"
-echo "either start a standalone sync or use ofelia for cronjob."
-echo "Read more on https://github.com/seatable/."
-echo ""
 rclone version
-
 
 # cron or infinite loop to keep container alive
 if [ "$RUN_MODE" = "cron" ]; then
