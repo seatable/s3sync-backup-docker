@@ -118,6 +118,7 @@ services:
       - RUN_MODE=${RUN_MODE:-cron}
       - TZ=${TIME_ZONE}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SKIP_SIZE_CHECK=${SKIP_SIZE_CHECK:-false}
       - ALLOWED_DEVIATION=${ALLOWED_DEVIATION:-1}
       - B1_FROM=${B1_FROM}
       - B1_TO=${B1_TO}
@@ -143,6 +144,9 @@ services:
       - RCLONE_S3_NO_CHECK_BUCKET=${RCLONE_S3_NO_CHECK_BUCKET:-true}
       - RCLONE_USE_MMAP=${RCLONE_USE_MMAP:-true}
       - RCLONE_MODIFY_WINDOW=${RCLONE_MODIFY_WINDOW:-1ns}
+      - RCLONE_TPSLIMIT=${RCLONE_TPSLIMIT:-0}
+      - RCLONE_TPSLIMIT_BURST=${RCLONE_TPSLIMIT_BURST:-1}
+      - RCLONE_LIST_CUTOFF=${RCLONE_LIST_CUTOFF:-1000000}
     logging:
       driver: "json-file"
       options:
@@ -163,8 +167,3 @@ services:
 1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of memory problem (dmesg)
 2. more buffer does not really help 8M is fine
 3. --size-only is not recommended, lead to erneutes synchronisieren, obwohl objekte im ziel schon vorhanden.
-
-## Todos:
-
-- skip size check
-- pre tag nicht richtig

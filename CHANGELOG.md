@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.0.1 (21.11.2025)
+
+- install tzdata in docker container
+- new env variable `SKIP_SIZE_CHECK`
+- fix container tagging "pre"
+
 ## v2.0.0 (13.11.2025)
 
 - complete rewrite

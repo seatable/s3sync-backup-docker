@@ -35,7 +35,7 @@ jobs:
       - name: Set set_image_tag_prefix to empty or "testing" depending on git tag prefix
         id: set_image_tag_prefix
         run: |
-          if [[ "${{ steps.extract_github_ref_prefix.outputs.git_tag_prefix }}" == "pre-" ]]; then
+          if [[ "${{ steps.extract_github_ref_prefix.outputs.git_tag_prefix }}" == "pre" ]]; then
             echo "image_tag_prefix=testing-" >> $GITHUB_OUTPUT
           elif [[ "${{ steps.extract_github_ref_prefix.outputs.git_tag_prefix }}" == "" ]]; then
             echo "image_tag_prefix=" >> $GITHUB_OUTPUT

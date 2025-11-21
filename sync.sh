@@ -4,7 +4,7 @@
 source /etc/envvars
 
 # set USER_AGENT
-USER_AGENT="s3sync-backup-docker/2.0.0"
+USER_AGENT="s3sync-backup-docker/2.0.1"
 
 LOG_FILE=/tmp/lastrun.log
 start=`date +%s`
@@ -101,7 +101,7 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
     if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
 
         # Sync the buckets (bucket sync = bs)
-        echo ""
+        log INFO ""
         log INFO "Sync the bucket (${!FROM_VAR} -> ${!TO_VAR})"
         log DEBUG "Sync command is: rclone sync ${!FROM_VAR} ${!TO_VAR}"
         start_bs=`date +%s`
@@ -110,12 +110,14 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
         log "INFO" "Sync finished after $((end_bs-start_bs)) seconds."
 
         # Check bucket size (check size = cs)
-        log INFO "Get the bucket size"
-        start_sc=`date +%s`
-        json1=`rclone size ${!FROM_VAR} --json`
-        json2=`rclone size ${!TO_VAR} --json`
-        end_sc=`date +%s`
-        log "INFO" "Get the bucket size finished after $((end_sc-start_sc)) seconds."
+        if [ "${SKIP_SIZE_CHECK,,}" != "true" ]; then
+            log INFO "Get the bucket size"
+            start_sc=`date +%s`
+            json1=`rclone size ${!FROM_VAR} --json`
+            json2=`rclone size ${!TO_VAR} --json`
+            end_sc=`date +%s`
+            log "INFO" "Get the bucket size finished after $((end_sc-start_sc)) seconds."
+        fi
 
         if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
             log ERROR "Bucket configuration for B${i}_FROM seems to be wrong"
