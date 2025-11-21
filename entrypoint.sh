@@ -24,13 +24,13 @@ echo ""
 rclone version
 
 printenv | sed 's/^/export /' > /etc/envvars
-sed -i -e '/^export PWD=/d' -e '/^export SHLVL=/d' -e '/^export BACKUP_CRON=/d' /etc/envvars
+sed -i -e '/^export PWD=/d' -e '/^export SHLVL=/d' -e '/^export S3_BACKUP_CRON=/d' /etc/envvars
 
 # cron or infinite loop to keep container alive
 if [ "$RUN_MODE" = "cron" ]; then
 
-    echo "Setup s3 sync backup cron job with cron expression BACKUP_CRON: ${BACKUP_CRON}"
-    echo "${BACKUP_CRON} root /usr/bin/flock -n /var/run/sync.lock /bin/sync.sh >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
+    echo "Setup s3 sync backup cron job with cron expression S3_BACKUP_CRON: ${S3_BACKUP_CRON}"
+    echo "${S3_BACKUP_CRON} root /usr/bin/flock -n /var/run/sync.lock /bin/sync.sh >/proc/1/fd/1 2>/proc/1/fd/2" > /etc/crontab
     echo '
 # An empty line is required at the end of this file for a valid cron file.
 ' >> /etc/crontab

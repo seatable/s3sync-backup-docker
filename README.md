@@ -47,7 +47,7 @@ type = s3
 provider = Other
 access_key_id = ...
 secret_access_key = ...
-region = 
+region =
 endpoint = sos-de-fra-1.exo.io
 acl = private
 
@@ -67,26 +67,26 @@ It will automatically mounted in the container.
 
 The container is set up by setting environment variables and volumes.
 
-| Name                | Description                                 | Example                                   | Default                          |
-| ------------------- | ------------------------------------------- | ----------------------------------------- | -------------------------------- |
-| `BACKUP_CRON`       | Execution schedule for the backup           | `15 3 * * *`                              | `15 3 * * *`                     |
-| `RUN_MODE`          | ... | `cron` or `sleep` | `cron`                                                                               |
-| `TZ`                | Timezone                                    | `Europe/Berlin`                           |                                  |
-| `LOG_LEVEL`         | Define log level                            | `DEBUG`, `INFO`, `WARNING` or `ERROR`.    | `INFO`                           |
-| `ALLOWED_DEVIATION` | Allowed deviation of number of objects in % | `1`                                       | `1`                              |
-| `B1_FROM`           | Bucket name mapping (Source)                | `rclone-remote:bucket-name`               |                                  |
-| `B1_TO`             | Bucket name mapping (Backup)                | `rclone-remote:backup-name`               |                                  |
-| `B2_FROM`           | Bucket name mapping (Source)                | `rclone-remote:bucket-name`               |                                  |
-| `B2_TO`             | Bucket name mapping (Backup)                | `rclone-remote:backup-name`               |                                  |
-| `B3_FROM`           | ... up to 6 bucket mappings are allowed     |                                           |                                  |
-| `B3_TO`             |                                             |                                           |                                  |
-| `HEALTHCHECK_URL`   | healthcheck.io server check url             | `https://healthcheck.io/ping/a444061a`    |                                  |
-| `RCLONE_LOG_LEVEL` | How verbose rclone is | `DEBUG`, `INFO`, `NOTICE` or `DEBUG` | `INFO` |
-| ... | | | 
-| `RCLONE_NUM_CHECKERS`      | Define number of `--checkers` of rclone     | `64`                                      | `8`                             |
-| `RCLONE_NUM_TRANSFERS`     | Define number of `--transfers` of rclone    | `16`                                      | `4`                             | 
-| `RLCONE_STATS`    | Define time between stats output            | `60s` or `2m`                                     | `60s`                            |
-| `RCLONE_BUFFER_SIZE`       | Define value of `--buffer-size` of rclone   | `16M`                                     | `0`                              |
+| Name                   | Description                                 | Example                                | Default      |
+| ---------------------- | ------------------------------------------- | -------------------------------------- | ------------ |
+| `S3_BACKUP_CRON`       | Execution schedule for the backup           | `15 3 * * *`                           | `15 3 * * *` |
+| `RUN_MODE`             | ...                                         | `cron` or `sleep`                      | `cron`       |
+| `TZ`                   | Timezone                                    | `Europe/Berlin`                        |              |
+| `LOG_LEVEL`            | Define log level                            | `DEBUG`, `INFO`, `WARNING` or `ERROR`. | `INFO`       |
+| `ALLOWED_DEVIATION`    | Allowed deviation of number of objects in % | `1`                                    | `1`          |
+| `B1_FROM`              | Bucket name mapping (Source)                | `rclone-remote:bucket-name`            |              |
+| `B1_TO`                | Bucket name mapping (Backup)                | `rclone-remote:backup-name`            |              |
+| `B2_FROM`              | Bucket name mapping (Source)                | `rclone-remote:bucket-name`            |              |
+| `B2_TO`                | Bucket name mapping (Backup)                | `rclone-remote:backup-name`            |              |
+| `B3_FROM`              | ... up to 6 bucket mappings are allowed     |                                        |              |
+| `B3_TO`                |                                             |                                        |              |
+| `HEALTHCHECK_URL`      | healthcheck.io server check url             | `https://healthcheck.io/ping/a444061a` |              |
+| `RCLONE_LOG_LEVEL`     | How verbose rclone is                       | `DEBUG`, `INFO`, `NOTICE` or `DEBUG`   | `INFO`       |
+| ...                    |                                             |                                        |
+| `RCLONE_NUM_CHECKERS`  | Define number of `--checkers` of rclone     | `64`                                   | `8`          |
+| `RCLONE_NUM_TRANSFERS` | Define number of `--transfers` of rclone    | `16`                                   | `4`          |
+| `RLCONE_STATS`         | Define time between stats output            | `60s` or `2m`                          | `60s`        |
+| `RCLONE_BUFFER_SIZE`   | Define value of `--buffer-size` of rclone   | `16M`                                  | `0`          |
 
 ### Hooks
 
@@ -114,7 +114,7 @@ services:
       - /opt/s3sync/rclone/rclone.conf:/root/.config/rclone/rclone.conf
       #- /opt/s3sync/hooks:/hooks:ro
     environment:
-      - BACKUP_CRON=${BACKUP_CRON:-15 3 * * *} # Start s3sync always at 3:15 am.
+      - S3_BACKUP_CRON=${S3_BACKUP_CRON:-15 3 * * *} # Start s3sync always at 3:15 am.
       - RUN_MODE=${RUN_MODE:-cron}
       - TZ=${TIME_ZONE}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
