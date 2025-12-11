@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0 (11.12.2025)
+
+- new env variable `SHARDED_SYNC` for huge buckets with millions of objects
+
 ## v2.0.1 (21.11.2025)
 
 - install tzdata in docker container

@@ -103,11 +103,38 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
         # Sync the buckets (bucket sync = bs)
         log INFO ""
         log INFO "Sync the bucket (${!FROM_VAR} -> ${!TO_VAR})"
-        log DEBUG "Sync command is: rclone sync ${!FROM_VAR} ${!TO_VAR}"
-        start_bs=`date +%s`
-        rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
-        end_bs=`date +%s`
-        log "INFO" "Sync finished after $((end_bs-start_bs)) seconds."
+
+        if [ "${SHARDED_SYNC,,}" = "true" ]; then
+            start_bs=$(date +%s)
+            log INFO "Sharded sync mode enabled (sync by subfolders)"
+            tmp_folders="/tmp/folders_${i}.txt"
+            log DEBUG "Listing subfolders with: rclone lsf ${!FROM_VAR}"
+            rclone lsf "${!FROM_VAR}" > "$tmp_folders"
+
+            if [ ! -s "$tmp_folders" ]; then
+                log ERROR "No subfolders found in ${!FROM_VAR}."
+                healthcheck /fail
+            else
+                while IFS= read -r folder; do
+                    folder="${folder%/}" # remove trailing slash if present
+                    log INFO "Syncing subfolder: ${folder}/"
+                    log DEBUG "Command: rclone sync ${!FROM_VAR}/${folder}/ ${!TO_VAR}/${folder}/"
+                    start_bs2=$(date +%s)
+                    rclone sync "${!FROM_VAR}/${folder}/" "${!TO_VAR}/${folder}/" 2>&1
+                    end_bs2=$(date +%s)
+                    log INFO "Subfolder '${folder}' synced after $((end_bs2-start_bs2)) seconds."
+                done < "$tmp_folders"
+            fi
+            end_bs=$(date +%s)
+            log "INFO" "(Sharded) Sync finished after $((end_bs-start_bs)) seconds."
+
+        else
+            log DEBUG "Sync command is: rclone sync ${!FROM_VAR} ${!TO_VAR}"
+            start_bs=`date +%s`
+            rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
+            end_bs=`date +%s`
+            log "INFO" "Sync finished after $((end_bs-start_bs)) seconds."
+        fi
 
         # Check bucket size (check size = cs)
         if [ "${SKIP_SIZE_CHECK,,}" != "true" ]; then

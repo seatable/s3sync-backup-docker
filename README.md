@@ -147,6 +147,7 @@ services:
       - RCLONE_TPSLIMIT=${RCLONE_TPSLIMIT:-0}
       - RCLONE_TPSLIMIT_BURST=${RCLONE_TPSLIMIT_BURST:-1}
       - RCLONE_LIST_CUTOFF=${RCLONE_LIST_CUTOFF:-1000000}
+      - SHARDED_SYNC=${SHARDED_SYNC:-false}
     logging:
       driver: "json-file"
       options:
@@ -162,8 +163,11 @@ services:
 
 ## Out of memory issue
 
+...
+
 ## Performance tweaking
 
-1. Increase Number of checkers and transfers will speed up the synchronisation. Probably out of memory problem (dmesg)
+1. Increase Number of checkers (up to 500 each) and transfers (up to 100) will speed up the synchronisation. Probably out of memory problem (dmesg)
 2. more buffer does not really help 8M is fine
 3. --size-only is not recommended, lead to erneutes synchronisieren, obwohl objekte im ziel schon vorhanden.
+
