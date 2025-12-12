@@ -144,18 +144,19 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
             json2=`rclone size ${!TO_VAR} --json`
             end_sc=`date +%s`
             log "INFO" "Get the bucket size finished after $((end_sc-start_sc)) seconds."
-        fi
+        
 
-        if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
-            log ERROR "Bucket configuration for B${i}_FROM seems to be wrong"
-        fi
-        if [[ -z "$json2" ]] || ! echo "$json2" | jq . >/dev/null 2>&1 || ! echo "$json2" | jq 'has("count")' | grep -q true; then
-            log ERROR "Bucket configuration for B${i}_TO seems to be wrong"
-        fi
-        log DEBUG "Result of rclone size for B${i}_FROM: $json1"
-        log DEBUG "Result of rclone size for B${i}_TO: $json2"
+            if [[ -z "$json1" ]] || ! echo "$json1" | jq . >/dev/null 2>&1 || ! echo "$json1" | jq 'has("count")' | grep -q true; then
+                log ERROR "Bucket configuration for B${i}_FROM seems to be wrong"
+            fi
+            if [[ -z "$json2" ]] || ! echo "$json2" | jq . >/dev/null 2>&1 || ! echo "$json2" | jq 'has("count")' | grep -q true; then
+                log ERROR "Bucket configuration for B${i}_TO seems to be wrong"
+            fi
+            log DEBUG "Result of rclone size for B${i}_FROM: $json1"
+            log DEBUG "Result of rclone size for B${i}_TO: $json2"
 
-        compare_size $json1 $json2
+            compare_size $json1 $json2
+        fi
     fi
 done
 
