@@ -4,7 +4,7 @@
 source /etc/envvars
 
 # set USER_AGENT
-USER_AGENT="s3sync-backup-docker/2.0.1"
+USER_AGENT="s3sync-backup-docker/2.1.2"
 
 LOG_FILE=/tmp/lastrun.log
 start=`date +%s`
@@ -101,12 +101,12 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
     if [[ -n ${!FROM_VAR} ]] && [[ -n ${!TO_VAR} ]]; then
 
         # Sync the buckets (bucket sync = bs)
-        log INFO ""
-        log INFO "Sync the bucket (${!FROM_VAR} -> ${!TO_VAR})"
+        log NOTICE ""
+        log NOTICE "Sync the bucket (${!FROM_VAR} -> ${!TO_VAR})"
 
         if [ "${SHARDED_SYNC,,}" = "true" ]; then
             start_bs=$(date +%s)
-            log INFO "Sharded sync mode enabled (sync by subfolders)"
+            log NOTICE "Sharded sync mode enabled (sync by subfolders)"
             tmp_folders="/tmp/folders_${i}.txt"
             log DEBUG "Listing subfolders with: rclone lsf ${!FROM_VAR}"
             rclone lsf "${!FROM_VAR}" > "$tmp_folders"
@@ -126,19 +126,19 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
                 done < "$tmp_folders"
             fi
             end_bs=$(date +%s)
-            log "INFO" "(Sharded) Sync finished after $((end_bs-start_bs)) seconds."
+            log "NOTICE" "(Sharded) Sync finished after $((end_bs-start_bs)) seconds."
 
         else
             log DEBUG "Sync command is: rclone sync ${!FROM_VAR} ${!TO_VAR}"
             start_bs=`date +%s`
             rclone sync ${!FROM_VAR} ${!TO_VAR} 2>&1
             end_bs=`date +%s`
-            log "INFO" "Sync finished after $((end_bs-start_bs)) seconds."
+            log "NOTICE" "Sync finished after $((end_bs-start_bs)) seconds."
         fi
 
         # Check bucket size (check size = cs)
         if [ "${SKIP_SIZE_CHECK,,}" != "true" ]; then
-            log INFO "Get the bucket size"
+            log NOTICE "Get the bucket size"
             start_sc=`date +%s`
             json1=`rclone size ${!FROM_VAR} --json`
             json2=`rclone size ${!TO_VAR} --json`
@@ -156,6 +156,8 @@ for ((i=1; i<=MAX_BUCKETS; i++)); do
             log DEBUG "Result of rclone size for B${i}_TO: $json2"
 
             compare_size $json1 $json2
+        else
+            log NOTICE "Size check skipped"
         fi
     fi
 done
@@ -172,7 +174,7 @@ end=`date +%s`
 log NOTICE "s3sync job finished at $(date +"%Y-%m-%d %H:%M:%S") after $((end-start)) seconds."
 
 if [[ $statusCode == 0 ]]; then
-    log INFO "S3 Sync Backup Successful"
+    log NOTICE "S3 Sync Backup Successful"
     healthcheck /0
 else
     log ERROR "S3 Sync Backup Failed with Status ${statusCode}"
@@ -181,7 +183,7 @@ fi
 
 # /hooks/post-backup.sh
 if [ -f "/hooks/post-backup.sh" ]; then
-    log "INFO" "Starting post-backup script"
+    log "NOTICE" "Starting post-backup script"
     /hooks/post-backup.sh $statusCode
     if [ $? -ne 0 ]; then
         log "ERROR" "post-backup.sh was not successful."
