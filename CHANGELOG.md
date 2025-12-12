@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1 (12.12.2025)
+
+- fix: don't throw an error if `SKIP_SIZE_CHECK` is set to true
+
 ## v2.1.0 (11.12.2025)
 
 - new env variable `SHARDED_SYNC` for huge buckets with millions of objects
