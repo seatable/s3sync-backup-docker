@@ -4,7 +4,7 @@
 source /etc/envvars
 
 # set USER_AGENT
-USER_AGENT="s3sync-backup-docker/2.1.2"
+USER_AGENT="s3sync-backup-docker/2.2.0"
 
 LOG_FILE=/tmp/lastrun.log
 start=`date +%s`

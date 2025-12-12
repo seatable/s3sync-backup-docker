@@ -1,9 +1,11 @@
 # Changelog
 
-## v2.1.2 (12.12.2025)
+## v2.2.0 (12.12.2025)
 
 - fix: don't throw an error if `SKIP_SIZE_CHECK` is set to true
 - updated log levels
+- updated README
+- updated env variable names
 
 ## v2.1.0 (11.12.2025)
 
