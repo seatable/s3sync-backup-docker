@@ -23,7 +23,7 @@ This container supports two modes:
 - **Manual mode** (`RUN_MODE=sleep`): The container stays idle until you trigger a sync manually:
 
 ```bash
-docker exec -it s3sync sync.sh`
+docker exec -it s3sync sync.sh
 ```
 
 ## Configuration overview
@@ -113,8 +113,8 @@ Up to 6 source/target pairs are supported.
 
 | Name                        | Description             | Example                              | Default   |
 | --------------------------- | ----------------------- | ------------------------------------ | --------- |
-| `RCLONE_LOG_LEVEL`          | rclone log level        | `DEBUG`, `INFO`, `NOTICE` or `DEBUG` | `INFO`    |
-| `RCLONE_STATS_LOG_LEVEL`    | rclone stats log level  | `DEBUG`, `INFO`, `NOTICE` or `DEBUG` | `INFO`    |
+| `RCLONE_LOG_LEVEL`          | rclone log level        | `DEBUG`, `INFO`, `NOTICE` or `ERROR` | `INFO`    |
+| `RCLONE_STATS_LOG_LEVEL`    | rclone stats log level  | `DEBUG`, `INFO`, `NOTICE` or `ERROR` | `INFO`    |
 | `RCLONE_STATS`              | Stats interval          | `180s`                               | `60s`     |
 | `RCLONE_STATS_ONE_LINE`     | One-line stats output   | `true` or `false`                    | `true`    |
 | `RCLONE_CHECKSUM`           | Use checksum comparison | `true` or `false`                    | `true`    |
